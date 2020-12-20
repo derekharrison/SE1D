@@ -46,7 +46,7 @@ void solver(d_data domain_data,
     Complex* psipo = new Complex[Nx];
 
     /* Start calculations */
-    Complex i(0,0);
+    Complex i(0,1);
     int max_iter = 300;
     double d_x = L/Nx;
     double d_t = (tf - to)/Nt;
@@ -160,8 +160,8 @@ void solver(d_data domain_data,
         solver_data->error_real = 0.0;
         solver_data->error_im = 0.0;
         for(int j = 0; j < Nx; ++j) {
-            solver_data->error_real += fabs(psip[j].a - psi_prev[j].a);
-            solver_data->error_im += fabs(psip[j].b - psi_prev[j].b);
+            solver_data->error_real += fabs(1.0 - psip[j].a/psi_prev[j].a);
+            solver_data->error_im += fabs(1.0 - psip[j].b/psi_prev[j].b);
         }
 
         solver_data->error_real /= Nx;
