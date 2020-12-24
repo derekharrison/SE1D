@@ -47,7 +47,7 @@ void solver(d_data domain_data,
 
     /* Start calculations */
     Complex i(0,1);
-    int max_iter = 300;
+    int max_iter = 2000;
     double d_x = L/Nx;
     double d_t = (tf - to)/Nt;
     t = 0.0;
@@ -154,6 +154,20 @@ void solver(d_data domain_data,
             psip[Nx-1].b = psip[Nx-1].b/(a*a + b*b);
 
             it++;
+        }
+
+        /* Normalize */
+        Complex norm_const(0,0);
+        for(int j = 0; j < Nx; ++j) {
+        	Complex psip_conj(psip[j].a, -psip[j].b);
+        	norm_const = norm_const + (psip[j]*psip_conj);
+        }
+
+        for(int j = 0; j < Nx; ++j) {
+        	psip[j].a /= sqrt(norm_const.a);
+        	psip[j].b /= sqrt(norm_const.a);
+        	psi_prev[j].a /= sqrt(norm_const.a);
+        	psi_prev[j].b /= sqrt(norm_const.a);
         }
 
         /* Check convergence */
